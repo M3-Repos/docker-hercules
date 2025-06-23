@@ -12,14 +12,13 @@ RUN apt update \
     && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER hercules
 WORKDIR /home/hercules
-RUN cd ~ \
-    && git clone https://github.com/wrljet/hercules-helper.git \
+RUN git clone https://github.com/wrljet/hercules-helper.git \
     && mkdir herctest && cd herctest && \
    ~/hercules-helper/hercules-buildall.sh --auto --flavor=sdl-hyperion
 
 FROM ubuntu:24.04
 RUN apt update \
-    && apt install -y libcap2-bin \
+    && apt install -y libcap2-bin regina-rexx libregina3 \
     && useradd -ms /bin/bash hercules 
 USER hercules
 WORKDIR /home/hercules
@@ -27,8 +26,9 @@ ENV PATH="/home/hercules/herctest/herc4x/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/home/hercules/herctest/herc4x/lib"
 COPY --from=builder /home/hercules/herctest/herc4x/ /home/hercules/herctest/herc4x
 USER root
-RUN setcap 'cap_sys_nice=eip' /home/hercules/herctest/herc4x/bin/hercules \
-    && setcap 'cap_sys_nice=eip' /home/hercules/herctest/herc4x/bin/herclin \
-    && setcap 'cap_net_admin+ep' /home/hercules/herctest/herc4x/bin/hercifc && \
-    chown hercules:hercules /home/hercules/herctest/herc4x/bin/hercules
+RUN setcap 'cap_sys_nice=eip' /home/hercules/herctest/herc4x/bin/hercules && \
+    setcap 'cap_sys_nice=eip' /home/hercules/herctest/herc4x/bin/herclin && \
+    setcap 'cap_net_admin+ep' /home/hercules/herctest/herc4x/bin/hercifc && \
+    chown hercules:hercules /home/hercules/herctest/herc4x/bin/hercules && \
+    ln -s /usr/lib/x86_64-linux-gnu/libregina.so.3 /usr/lib/x86_64-linux-gnu/libregina.so
 USER hercules
