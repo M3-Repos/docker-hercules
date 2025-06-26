@@ -32,3 +32,6 @@ RUN setcap 'cap_sys_nice=eip' /home/hercules/herctest/herc4x/bin/hercules && \
     chown hercules:hercules /home/hercules/herctest/herc4x/bin/hercules && \
     ln -s /usr/lib/$(uname -m)-linux-gnu/libregina.so.3 /usr/lib/$(uname -m)-linux-gnu/libregina.so
 USER hercules
+COPY --chmod=755 startup.sh ./startup.sh
+COPY hercules.rc ./hercules.rc
+CMD ["./startup.sh"]
