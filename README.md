@@ -52,7 +52,7 @@ Dockerfile:
 FROM ghcr.io/m3-repos/hercules:latest
 
 WORKDIR /home/hercules/MAINFRAME
-COPY . /home/hercules/MAINFRAME
+COPY --chown=hercules:hercules . /home/hercules/MAINFRAME/
 
 #ENV HERCULES_CNF="hercules.cnf" HERCULES_RC="hercules.rc"
 #EXPOSE 3270/tcp 8081/tcp
