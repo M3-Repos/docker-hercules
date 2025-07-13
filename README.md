@@ -28,8 +28,8 @@ export dest_dir="/home/hercules/MAINFRAME"
 docker run -d \
         --cap-add=NET_ADMIN,SYS_NICE \
         -p 127.0.0.1:3270:3270 -p8081:8081 \
-        -v=$src_dir:$dest_dir \
-        -w=$dest_dir m3-repos/hercules
+        -v="$src_dir":"$dest_dir" \
+        -w="$dest_dir" m3-repos/hercules
 ```
 
 Hercules will look for machine and runtime configuration files named `hercules.cnf` and `hercules.rc` in the working directory. Explicitly set relative paths to configuration files at runtime by using the `-e=` option to set environment variables: 
